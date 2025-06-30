@@ -4,10 +4,11 @@ import numpy as np
 import pickle
 from scipy.signal import butter, filtfilt, iirnotch
 
-input_dir = "/home/test/members/Xu/data/SEED"        # 替换为你的 .mat 文件路径
-output_dir = "../dataset_pkl"
+input_dir = "../../dataset/SEED"        # 替换为你的 .mat 文件路径
+output_dir = "../dataset_pkl2"
 fixed_labels = [1, 0, -1, -1, 0, 1, -1, 0, 1, 1, 0, -1, 0, 1, -1]
 
+mapped_labels = [0 if x==-1 else (1 if x==0 else 2) for x in fixed_labels]
 
 def bandpass_filter(data, lowcut=0.1, highcut=75.0, fs=200.0, order=5):
     nyq = 0.5 * fs
@@ -18,7 +19,6 @@ def bandpass_filter(data, lowcut=0.1, highcut=75.0, fs=200.0, order=5):
 def notch_filter(data, notch_freq=50.0, fs=200.0, quality=30):
     b, a = iirnotch(notch_freq / (fs / 2), quality)
     return filtfilt(b, a, data, axis=-1)
-
 
 def process_one_file(mat_file):
     file_path = os.path.join(input_dir, mat_file)
@@ -43,7 +43,7 @@ def process_one_file(mat_file):
             data = bandpass_filter(data, fs=200.0)
             data = notch_filter(data, fs=200.0)
 
-            label = fixed_labels[i]
+            label = mapped_labels[i]
 
             # 每 2000 时间点切一段
             num_segments = data.shape[1] // 2000

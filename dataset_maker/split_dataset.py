@@ -44,5 +44,5 @@ def split_dataset(root_dir, train_ratio=0.8, val_ratio=0.1, test_ratio=0.1):
 
 if __name__ == '__main__':
     # 替换成你的总文件夹路径
-    folder_path = "/home/test/members/Xu/LaBraM/dataset_pkl"
+    folder_path = "../dataset_pkl2"
     split_dataset(folder_path)

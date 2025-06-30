@@ -228,7 +228,7 @@ def get_dataset(args):
         metrics = ["accuracy", "balanced_accuracy", "cohen_kappa", "f1_weighted"]
     elif args.dataset == 'SEED':
         # Assuming `prepare_SEED_dataset` prepares the SEED dataset
-        train_dataset, test_dataset, val_dataset = utils.prepare_SEED_dataset("dataset_pkl")
+        train_dataset, test_dataset, val_dataset = utils.prepare_SEED_dataset("dataset_pkl2")
         # Channel names for SEED dataset (replace with actual channels if needed)
         ch_names = [
             'FP1', 'FPZ', 'FP2', 'AF3', 'AF4', 'F7', 'F5', 'F3', 'F1', 'FZ', 'F2', 'F4',
