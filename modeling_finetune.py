@@ -360,17 +360,10 @@ class NeuralTransformer(nn.Module):
         x = torch.cat((cls_tokens, x), dim=1)
 
         # pos_embed_used = self.pos_embed[:, input_chans] if input_chans is not None else self.pos_embed #这行是原来的，但是运行报错，用GPT改成下面的了
-       
-       #下面这个是GPT改的
-        if self.pos_embed is not None and input_chans is not None:
-            pos_embed_used = self.pos_embed[:, input_chans]
-        else:
-            pos_embed_used = self.pos_embed  # 也可能是 None，但至少不切片了
-
-
-
 
         if self.pos_embed is not None:
+            # 这一行本来是在外面的，因为pos_embed为none，而直接访问pos_embed[:, input_chans]会报错：访问了空对象
+            pos_embed_used = self.pos_embed[:, input_chans] if input_chans is not None else self.pos_embed
             pos_embed = pos_embed_used[:, 1:, :].unsqueeze(2).expand(batch_size, -1, input_time_window, -1).flatten(1, 2)
             pos_embed = torch.cat((pos_embed_used[:,0:1,:].expand(batch_size, -1, -1), pos_embed), dim=1)
             x = x + pos_embed
